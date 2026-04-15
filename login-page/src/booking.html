@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking - Diriyah Train System</title>
+    <link rel="stylesheet" href="booking.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="booking-container">
+        <header>
+            <h1><i class="fas fa-ticket-alt"></i> Passenger Booking</h1>
+            <p>Search and reserve your seat on Diriyah Trains</p>
+        </header>
+
+        <section class="search-box">
+            <div class="input-field">
+                <label>From</label>
+                <select id="from">
+                    <option>Riyadh</option>
+                    <option>Jeddah</option>
+                    <option>Makkah</option>
+                    <option>Abha</option>
+                    <option>Tabuk</option>
+                    <option>Al Akhdar</option>
+                    <option>Jabbel Al Akhdar</option>
+                    <option>Ahssa</option>
+                    <option>Jassan</option>   
+                </select>
+            </div>
+            <div class="input-field">
+                <label>To</label>
+                <select id="to">
+                   <option>Riyadh</option>
+                    <option>Jeddah</option>
+                    <option>Makkah</option>
+                    <option>Abha</option>
+                    <option>Tabuk</option>
+                    <option>Al Akhdar</option>
+                    <option>Jabbel Al Akhdar</option>
+                    <option>Ahssa</option>
+                    <option>Jassan</option>
+                    
+                </select>
+            </div>
+            <div class="input-field">
+                <label>Date</label>
+                <input type="date" id="date">
+            </div>
+            <button class="btn-primary" onclick="searchTrains()">Search</button>
+        </section>
+
+        <div id="trainResults"></div>
+
+        <div id="bookingModal" class="modal">
+            <div class="modal-content">
+                <h3><i class="fas fa-user-edit"></i> Passenger Information</h3>
+                <input type="text" id="pName" placeholder="Full Name">
+                <input type="tel" id="pPhone" placeholder="Phone Number">
+                <select id="pSeat">
+                    <option value="">Select Seat Preference</option>
+                    <option value="window">Window</option>
+                    <option value="aisle">Aisle</option>
+                </select>
+                <div class="modal-actions">
+                    <button class="btn-confirm" id="confirmBookingBtn" type="button">Confirm Reservation</button>
+                    <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="booking.js"></script>
+</body>
+</html>

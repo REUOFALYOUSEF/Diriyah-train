@@ -1,0 +1,75 @@
+
+:root {
+    --dark-blue: #1a2a44;
+    --gold: #c5a059;
+    --white: #ffffff;
+}
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+body {
+    font-family: 'Arial', sans-serif;
+    background:
+        linear-gradient(rgba(240, 242, 245, 0.9), rgba(240, 242, 245, 0.9)),
+        url('photo.jpeg') center/cover no-repeat fixed;
+    margin: 0;
+    padding: 20px;
+}
+
+.booking-container { max-width: 900px; margin: auto; }
+
+header { text-align: center; color: var(--dark-blue); margin-bottom: 30px; }
+
+.search-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    gap: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.input-field { flex: 1; display: flex; flex-direction: column; }
+
+.btn-primary {
+    background: var(--dark-blue);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+/* Card Style */
+.train-card {
+    background: white;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 6px solid var(--gold);
+}
+
+/* Modal Style */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+    background: white;
+    width: 400px;
+    margin: 100px auto;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; }
+
+.btn-confirm { background: var(--gold); color: white; border: none; padding: 10px 20px; cursor: pointer; }
+.btn-cancel { background: #eee; border: none; padding: 10px 20px; cursor: pointer; }

@@ -1,0 +1,6 @@
+.background {
+    …
+    background: url('background.jpeg') center/cover no-repeat,
+                rgba(0, 0, 0, 0.4); /* أقل شفافية */
+    …
+}

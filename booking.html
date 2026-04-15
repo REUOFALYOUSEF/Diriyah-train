@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking - Diriyah Train System</title>
+    <link rel="stylesheet" href="booking.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-logo">
+            <img src="logo.jpeg" alt="Diriyah Train Logo" class="nav-logo-image">
+            <span>Diriyah Train</span>
+        </div>
+        <ul class="nav-links">
+                <li><a href="booking.html" data-role-home="true">Home</a></li>
+            <li><a href="#searchCard">Schedules</a></li>
+            <li><a href="#availableTrains">Available Trains</a></li>
+            <li><a href="my-reservations.html">My Reservations</a></li>
+        </ul>
+        <div class="nav-actions">
+            <div class="profile-menu" id="profileMenu">
+                <button class="profile-circle" id="profileMenuButton" type="button" aria-label="Open profile menu" aria-expanded="false">
+                    <span id="profileMenuLabel"><i class="fas fa-user"></i></span>
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="profile.html">My Profile</a>
+                    <button id="profileLogoutBtn" type="button">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="hero-content">
+           
+            <h1>Your Journey Begins with a Single Click</h1>
+            <p class="hero-subtitle">Fast search, smart route discovery, and seamless reservations in one place.</p>
+        </div>
+
+        <section class="search-card" id="searchCard">
+            <div class="input-field">
+                <label><i class="fas fa-location-dot"></i> From</label>
+                <select id="from">
+                    <option value="">Any</option>
+                    <option>Riyadh</option>
+                    <option>Jeddah</option>
+                    <option>Makkah</option>
+                    <option>Abha</option>
+                    <option>Tabuk</option>
+                    <option>Al Akhdar</option>
+                    <option>Jabbel Al Akhdar</option>
+                    <option>Ahssa</option>
+                    <option>Jassan</option>
+                    <option>Diriyah</option>
+                </select>
+            </div>
+            <div class="input-field">
+                <label><i class="fas fa-location-arrow"></i> To</label>
+                <select id="to">
+                    <option value="">Any</option>
+                    <option>Riyadh</option>
+                    <option>Jeddah</option>
+                    <option>Makkah</option>
+                    <option>Abha</option>
+                    <option>Tabuk</option>
+                    <option>Al Akhdar</option>
+                    <option>Jabbel Al Akhdar</option>
+                    <option>Ahssa</option>
+                    <option>Jassan</option>
+                    <option>Diriyah</option>
+                </select>
+            </div>
+            <div class="input-field">
+                <label><i class="far fa-calendar"></i> Date</label>
+                <input type="date" id="date">
+            </div>
+            <button class="btn-primary" onclick="searchTrains()">Search Trains</button>
+        </section>
+    </section>
+
+    <main class="booking-container">
+        <section class="home-grid" id="dashboardSummary">
+            <article class="summary-card">
+                <h4><i class="fas fa-suitcase-rolling"></i> My Bookings</h4>
+                <p class="summary-value" id="myBookingsCount">0</p>
+                <small id="lastBookingInfo">No bookings yet.</small>
+            </article>
+
+            <article class="summary-card">
+                <h4><i class="fas fa-route"></i> Preferred Route</h4>
+                <p class="summary-value" id="preferredRoute">-</p>
+                <small>Based on your latest booking</small>
+            </article>
+        </section>
+
+        <section class="results-section" id="availableTrains">
+            <div class="results-header">
+                <h3>Available Trains</h3>
+                <p>Live schedules tailored to your search.</p>
+            </div>
+            <div class="filters-bar" id="advancedFiltersBar">
+                <div class="filter-group price-group">
+                    <label>Price Range (SAR)</label>
+                    <div class="price-sliders">
+                        <input type="range" id="priceMinRange" min="0" max="0" value="0" step="1" aria-label="Minimum price">
+                        <input type="range" id="priceMaxRange" min="0" max="0" value="0" step="1" aria-label="Maximum price">
+                    </div>
+                    <p class="price-values"><span id="priceMinValue">0</span> - <span id="priceMaxValue">0</span></p>
+                </div>
+
+                <div class="filter-group class-group">
+                    <label for="classFilter">Class</label>
+                    <select id="classFilter">
+                        <option value="">All Classes</option>
+                        <option value="economy">Economy</option>
+                        <option value="business">Business</option>
+                    </select>
+                </div>
+
+                <div class="filter-group slot-group">
+                    <label>Departure Time</label>
+                    <div class="slot-buttons" id="timeSlotFilters">
+                        <button type="button" class="time-slot-btn active" data-slot="">All</button>
+                        <button type="button" class="time-slot-btn" data-slot="morning">Morning</button>
+                        <button type="button" class="time-slot-btn" data-slot="afternoon">Afternoon</button>
+                        <button type="button" class="time-slot-btn" data-slot="evening">Evening</button>
+                    </div>
+                </div>
+
+                <div class="filter-group reset-group">
+                    <button type="button" class="btn-cancel" id="resetTrainFiltersBtn">Reset Filters</button>
+                </div>
+            </div>
+            <div id="trainResults"></div>
+        </section>
+
+        <div id="bookingModal" class="modal">
+            <div class="modal-content">
+                <h3><i class="fas fa-user-edit"></i> Passenger Information</h3>
+                <input type="text" id="pName" placeholder="Full Name">
+                <input type="tel" id="pPhone" placeholder="Phone Number">
+                <select id="pSeat">
+                    <option value="">Select Seat Preference</option>
+                    <option value="window">Window</option>
+                    <option value="aisle">Aisle</option>
+                </select>
+                <div class="modal-actions">
+                    <button class="btn-confirm" id="confirmBookingBtn" type="button">Confirm Reservation</button>
+                    <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div>
+                <h4>Company</h4>
+                <a href="about.html" class="footer-primary-link">About Us</a>
+                <a href="faq.html" class="footer-primary-link">FAQ</a>
+                <a href="#">Careers</a>
+                <a href="#">Newsroom</a>
+            </div>
+            <div>
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="#">Booking Guide</a>
+            </div>
+            <div>
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+            <div>
+                <h4>Travel</h4>
+                <a href="#">Stations</a>
+                <a href="#">Routes</a>
+                <a href="#">Travel Tips</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="firebase-config.js"></script>
+                <script src="role-routing.js"></script>
+    <script src="app-notifications.js"></script>
+    <script src="booking.js"></script>
+</body>
+</html>

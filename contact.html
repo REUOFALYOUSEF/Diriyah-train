@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Diriyah Train</title>
+    <link rel="stylesheet" href="contact.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-logo">
+            <img src="logo.jpeg" alt="Diriyah Train Logo" class="nav-logo-image">
+            <span>Diriyah Train</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="booking.html" data-role-home="true">Home</a></li>
+            <li><a href="booking.html#searchCard">Schedules</a></li>
+            <li><a href="my-reservations.html">My Reservations</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a class="nav-btn" href="profile.html">My Profile</a>
+        </div>
+    </nav>
+
+    <main class="contact-page">
+        <section class="contact-hero">
+            <h1>Contact Us</h1>
+            <p>We are here to support your journey. Send us your inquiry and our team will respond promptly.</p>
+        </section>
+
+        <section class="contact-layout">
+            <article class="contact-card details-card">
+                <h2>Contact Details</h2>
+                <p>Reach Diriyah Train support through any of the channels below.</p>
+
+                <div class="detail-item">
+                    <span class="detail-icon"><i class="fas fa-phone"></i></span>
+                    <div>
+                        <h3>Phone</h3>
+                        <p>+966 11 234 5678</p>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-icon"><i class="fas fa-envelope"></i></span>
+                    <div>
+                        <h3>Email</h3>
+                        <p>support@diriyahtrain.sa</p>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-icon"><i class="fas fa-location-dot"></i></span>
+                    <div>
+                        <h3>Address</h3>
+                        <p>Diriyah Gate District, Diriyah, Riyadh Region, Saudi Arabia</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="contact-card form-card">
+                <h2>Inquiry Form ()</h2>
+                <form id="inquiryForm" novalidate>
+                    <div class="field-group">
+                        <label for="inqFullName">Full Name</label>
+                        <input type="text" id="inqFullName" name="fullName" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="inqEmail">Email Address</label>
+                        <input type="email" id="inqEmail" name="email" placeholder="Enter your email address" required>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="inqSubject">Subject</label>
+                        <input type="text" id="inqSubject" name="subject" placeholder="Enter inquiry subject" required>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="inqMessage">Message</label>
+                        <textarea id="inqMessage" name="message" rows="6" placeholder="Write your message" required></textarea>
+                    </div>
+
+                    <p id="inquiryError" class="inquiry-error" aria-live="polite"></p>
+
+                    <button id="sendInquiryBtn" class="send-btn" type="submit">
+                        <span class="btn-label">Send Message</span>
+                        <span class="btn-spinner" aria-hidden="true"></span>
+                    </button>
+                </form>
+            </article>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div>
+                <h4>Company</h4>
+                <a href="about.html" class="footer-primary-link">About Us</a>
+                <a href="faq.html" class="footer-primary-link">FAQ</a>
+                <a href="#">Careers</a>
+                <a href="#">Newsroom</a>
+            </div>
+            <div>
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="#">Booking Guide</a>
+            </div>
+            <div>
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+            <div>
+                <h4>Travel</h4>
+                <a href="#">Stations</a>
+                <a href="#">Routes</a>
+                <a href="#">Travel Tips</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="firebase-config.js"></script>
+    <script src="role-routing.js"></script>
+    <script src="app-notifications.js"></script>
+    <script src="contact.js"></script>
+</body>
+</html>

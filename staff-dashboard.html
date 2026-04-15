@@ -1,0 +1,373 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard - Diriyah Train Management System</title>
+    <link rel="stylesheet" href="staff-dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+
+    <!-- ── Header ───────────────────────────────────────────── -->
+    <header class="sd-header">
+        <div class="sd-header-left">
+            <button class="sd-menu-toggle" id="sdMenuToggle" type="button" aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="sd-logo">
+                <img src="logo.jpeg" alt="Diriyah Train Logo" class="sd-logo-img">
+                <span>Diriyah Train</span>
+            </div>
+        </div>
+        <div class="sd-header-welcome" id="sdWelcome">Welcome, Staff</div>
+        <div class="sd-header-right">
+            <div class="sd-profile-menu" id="profileMenu">
+                <button class="sd-profile-btn" id="profileMenuButton" type="button" aria-label="Profile menu">
+                    <span id="profileMenuLabel"><i class="fas fa-user"></i></span>
+                </button>
+                <div class="sd-profile-dropdown" id="profileDropdown">
+                    <a href="profile.html"><i class="fas fa-user-circle"></i> My Profile</a>
+                    <button id="profileLogoutBtn" type="button"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ── Layout ────────────────────────────────────────────── -->
+    <div class="sd-layout">
+
+        <!-- Sidebar -->
+        <aside class="sd-sidebar" id="sdSidebar">
+            <div class="sd-sidebar-stats">
+                <div class="sd-mini-stat"><span id="statPassengers">0</span><small>Passengers</small></div>
+                <div class="sd-mini-stat"><span id="statBookings">0</span><small>Bookings</small></div>
+                <div class="sd-mini-stat"><span id="statTrips">0</span><small>Trips</small></div>
+            </div>
+            <nav class="sd-nav">
+                <div class="sd-nav-group">
+                    <div class="sd-nav-group-title"><i class="fas fa-users"></i> Passenger Management</div>
+                    <a href="#" class="sd-nav-link active" data-panel="registerPassenger"><i class="fas fa-user-plus"></i> Register Passenger</a>
+                    <a href="#" class="sd-nav-link" data-panel="updateProfile"><i class="fas fa-user-edit"></i> Update Profile</a>
+                </div>
+                <div class="sd-nav-group">
+                    <div class="sd-nav-group-title"><i class="fas fa-ticket-alt"></i> Booking &amp; Operations</div>
+                    <a href="#" class="sd-nav-link" data-panel="createReservation"><i class="fas fa-plus-circle"></i> Create Reservation</a>
+                    <a href="#" class="sd-nav-link" data-panel="seatAvailability"><i class="fas fa-chair"></i> Seat Availability</a>
+                    <a href="#" class="sd-nav-link" data-panel="tripSearch"><i class="fas fa-train"></i> Trip Search</a>
+                </div>
+                <div class="sd-nav-group">
+                    <div class="sd-nav-group-title"><i class="fas fa-clipboard-list"></i> Reservations &amp; Records</div>
+                    <a href="#" class="sd-nav-link" data-panel="bookingHistory"><i class="fas fa-history"></i> Booking History</a>
+                    <a href="#" class="sd-nav-link" data-panel="cancelReservation"><i class="fas fa-times-circle"></i> Cancel Reservation</a>
+                    <a href="#" class="sd-nav-link" data-panel="bookingConfirmations"><i class="fas fa-check-circle"></i> Confirmations</a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main -->
+        <main class="sd-main">
+
+            <!-- Register Passenger -->
+            <section class="sd-panel active" id="registerPassenger">
+                <div class="sd-panel-header">
+                    <h2><i class="fas fa-user-plus"></i> Register New Passenger</h2>
+                    <p class="sd-panel-subtitle">Add a new passenger's personal details to the system.</p>
+                </div>
+                <div class="sd-form-card">
+                    <div class="sd-form-row">
+                        <div class="sd-form-field">
+                            <label for="rpFirstName">First Name <span class="req">*</span></label>
+                            <input type="text" id="rpFirstName" placeholder="First name">
+                        </div>
+                        <div class="sd-form-field">
+                            <label for="rpLastName">Last Name</label>
+                            <input type="text" id="rpLastName" placeholder="Last name">
+                        </div>
+                    </div>
+                    <div class="sd-form-field">
+                        <label for="rpEmail">Email Address <span class="req">*</span></label>
+                        <input type="email" id="rpEmail" placeholder="passenger@example.com">
+                    </div>
+                    <div class="sd-form-field">
+                        <label for="rpPhone">Phone Number</label>
+                        <input type="tel" id="rpPhone" placeholder="+966 5XXXXXXXX">
+                    </div>
+                    <p id="rpError" class="sd-error"></p>
+                    <div class="sd-form-actions">
+                        <button class="sd-btn-primary" id="rpSaveBtn" type="button"><i class="fas fa-save"></i> Register Passenger</button>
+                    </div>
+                    <div id="rpSuccessMsg" class="sd-success" style="display:none;"></div>
+                </div>
+            </section>
+
+            <!-- Update Profile -->
+            <section class="sd-panel" id="updateProfile" style="display:none;">
+                <div class="sd-panel-header">
+                    <h2><i class="fas fa-user-edit"></i> Update Passenger Profile</h2>
+                    <p class="sd-panel-subtitle">Search for a passenger and update their information.</p>
+                </div>
+                <div class="sd-form-card">
+                    <div class="sd-form-field">
+                        <label for="upEmail">Search by Email</label>
+                        <div class="sd-input-row">
+                            <input type="email" id="upEmail" placeholder="passenger@example.com">
+                            <button class="sd-btn-primary" id="upSearchBtn" type="button"><i class="fas fa-search"></i> Find</button>
+                        </div>
+                    </div>
+                    <p id="upError" class="sd-error"></p>
+                </div>
+                <div id="upForm" style="display:none;">
+                    <div class="sd-form-card">
+                        <p id="upEditingFor" class="sd-info-text" style="margin-bottom:16px;font-weight:600;color:#967035;"></p>
+                        <div class="sd-form-row">
+                            <div class="sd-form-field">
+                                <label for="upFirstName">First Name</label>
+                                <input type="text" id="upFirstName">
+                            </div>
+                            <div class="sd-form-field">
+                                <label for="upLastName">Last Name</label>
+                                <input type="text" id="upLastName">
+                            </div>
+                        </div>
+                        <div class="sd-form-field">
+                            <label for="upPhone">Phone Number</label>
+                            <input type="tel" id="upPhone">
+                        </div>
+                        <p id="upSaveError" class="sd-error"></p>
+                        <div class="sd-form-actions">
+                            <button class="sd-btn-primary" id="upSaveBtn" type="button"><i class="fas fa-save"></i> Save Changes</button>
+                        </div>
+                        <div id="upSuccessMsg" class="sd-success" style="display:none;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Create Reservation -->
+            <section class="sd-panel" id="createReservation" style="display:none;">
+                <div class="sd-panel-header">
+                    <h2><i class="fas fa-plus-circle"></i> Create New Reservation</h2>
+                    <p class="sd-panel-subtitle">Search for a passenger by name, phone, or email — then pick a train.</p>
+                </div>
+
+                <!-- Step 1: Find Passenger -->
+                <div class="sd-form-card">
+                    <div class="sd-step-label"><span class="sd-step-badge">1</span> Find Passenger</div>
+                    <div class="sd-form-field">
+                        <label for="crSearchQuery">Search by Name, Phone Number, or Email</label>
+                        <div class="sd-input-row">
+                            <input type="text" id="crSearchQuery" placeholder="e.g. Ahmed Ali, +966 5…, ahmed@mail.com">
+                            <button class="sd-btn-secondary" id="crSearchPassengerBtn" type="button"><i class="fas fa-search"></i> Search</button>
+                        </div>
+                    </div>
+                    <p id="crSearchError" class="sd-error"></p>
+                    <div id="crPassengerResults" class="sd-results" style="display:none;"></div>
+                    <div id="crSelectedPassengerCard" class="sd-selected-passenger" style="display:none;"></div>
+                </div>
+
+                <!-- Step 2: Search Trains -->
+                <div id="crTrainSearchSection" style="display:none;">
+                    <div class="sd-form-card">
+                        <div class="sd-step-label"><span class="sd-step-badge">2</span> Search Trains</div>
+                        <div class="sd-form-row sd-three-col">
+                            <div class="sd-form-field">
+                                <label for="crFrom">From</label>
+                                <select id="crFrom">
+                                    <option value="">Any city</option>
+                                    <option>Riyadh</option><option>Jeddah</option><option>Makkah</option>
+                                    <option>Abha</option><option>Tabuk</option><option>Al Akhdar</option>
+                                    <option>Jabbel Al Akhdar</option><option>Ahssa</option><option>Jassan</option><option>Diriyah</option>
+                                </select>
+                            </div>
+                            <div class="sd-form-field">
+                                <label for="crTo">To</label>
+                                <select id="crTo">
+                                    <option value="">Any city</option>
+                                    <option>Riyadh</option><option>Jeddah</option><option>Makkah</option>
+                                    <option>Abha</option><option>Tabuk</option><option>Al Akhdar</option>
+                                    <option>Jabbel Al Akhdar</option><option>Ahssa</option><option>Jassan</option><option>Diriyah</option>
+                                </select>
+                            </div>
+                            <div class="sd-form-field">
+                                <label for="crDate">Date</label>
+                                <input type="date" id="crDate">
+                            </div>
+                        </div>
+                        <div class="sd-form-actions">
+                            <button class="sd-btn-primary" id="crSearchTrainsBtn" type="button"><i class="fas fa-train"></i> Search Trains</button>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Filters -->
+                    <div class="sd-filters-bar" id="crFiltersBar" style="display:none;">
+                        <div class="sd-filter-group">
+                            <label>Price Range (SAR)</label>
+                            <div class="sd-price-sliders">
+                                <input type="range" id="crPriceMin" min="0" max="0" value="0" step="1" aria-label="Min price">
+                                <input type="range" id="crPriceMax" min="0" max="0" value="0" step="1" aria-label="Max price">
+                            </div>
+                            <p class="sd-price-display"><span id="crPriceMinVal">0</span> – <span id="crPriceMaxVal">0</span> SAR</p>
+                        </div>
+                        <div class="sd-filter-group">
+                            <label>Departure Time</label>
+                            <div class="sd-slot-row" id="crTimeSlots">
+                                <button type="button" class="sd-slot-btn active" data-slot="">All</button>
+                                <button type="button" class="sd-slot-btn" data-slot="morning">Morning</button>
+                                <button type="button" class="sd-slot-btn" data-slot="afternoon">Afternoon</button>
+                                <button type="button" class="sd-slot-btn" data-slot="evening">Evening</button>
+                            </div>
+                        </div>
+                        <div class="sd-filter-group sd-filter-reset">
+                            <button type="button" class="sd-btn-ghost" id="crResetFilters">Reset Filters</button>
+                        </div>
+                    </div>
+
+                    <div id="crTrainResults" class="sd-results"></div>
+                </div>
+
+                <!-- Step 3: Confirm Booking -->
+                <div id="crConfirmSection" style="display:none;">
+                    <div class="sd-form-card">
+                        <div class="sd-step-label"><span class="sd-step-badge">3</span> Confirm Booking</div>
+                        <div id="crSummary" class="sd-booking-summary"></div>
+                        <div class="sd-form-field" style="margin-top:14px;">
+                            <label for="crSeatPref">Seat Preference <span class="req">*</span></label>
+                            <select id="crSeatPref">
+                                <option value="">Select preference</option>
+                                <option value="window">Window</option>
+                                <option value="aisle">Aisle</option>
+                            </select>
+                        </div>
+                        <p id="crCapacityNote" class="sd-info-text"></p>
+                        <p id="crConfirmError" class="sd-error"></p>
+                        <div class="sd-form-actions">
+                            <button class="sd-btn-primary" id="crConfirmFinalBtn" type="button"><i class="fas fa-ticket-alt"></i> Confirm Booking</button>
+                            <button class="sd-btn-ghost" id="crBackToTrainsBtn" type="button">Change Train</button>
+                        </div>
+                        <div id="crSuccessMsg" class="sd-success" style="display:none;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seat Availability -->
+            <section class="sd-panel" id="seatAvailability" style="display:none;">
+                <div class="sd-panel-header">
+                    <h2><i class="fas fa-chair"></i> Seat Availability Check</h2>
+                    <p class="sd-panel-subtitle">Real-time seat availability for any train schedule.</p>
+                </div>
+                <div class="sd-form-card">
+                    <div class="sd-form-field">
+                        <label for="saTrainId">Train ID</label>
+                        <div class="sd-input-row">
+                            <input type="text" id="saTrainId" placeholder="e.g. TR-001">
+                            <button class="sd-btn-primary" id="saSearchBtn" type="button"><i class="fas fa-search"></i> Check</button>
+                        </div>
+                        <p id="saError" class="sd-error"></p>
+                    </div>
+                </div>
+                <div id="saResults" class="sd-results"></div>
+            </section>
+
+            <!-- Trip Search -->
+            <section class="sd-panel" id="tripSearch" style="display:none;">
+                <div class="sd-panel-header">
+                    <h2><i class="fas fa-train"></i> Trip Search</h2>
+                    <p class="sd-panel-subtitle">Find available train schedules for passengers.</p>
+                </div>
+                <div class="sd-form-card">
+                    <div class="sd-form-row">
+                        <div class="sd-form-field">
+                            <label for="tsFrom">From</label>
+                            <select id="tsFrom">
+                                <option value="">Any city</option>
+                                <option>Riyadh</option><option>Jeddah</option><option>Makkah</option>
+                                <option>Abha</option><option>Tabuk</option><option>Al Akhdar</option>
+                                <option>Jabbel Al Akhdar</option><option>Ahssa</option><option>Diriyah</option>
+                            </select>
+                        </div>
+                        <div class="sd-form-field">
+                            <label for="tsTo">To</label>
+                            <select id="tsTo">
+                                <option value="">Any city</option>
+                                <option>Riyadh</option><option>Jeddah</option><option>Makkah</option>
+                                <option>Abha</option><option>Tabuk</option><option>Al Akhdar</option>
+                                <option>Jabbel Al Akhdar</option><option>Ahssa</option><option>Diriyah</option>
+                            </select>
+                        </div>
+                        <div class="sd-form-field">
+                            <label for="tsDate">Date</label>
+                            <input type="date" id="tsDate">
+                        </div>
+                    </div>
+                    <div class="sd-form-actions">
+                        <button class="sd-btn-primary" id="tsSearchBtn" type="button"><i class="fas fa-train"></i> Search Trips</button>
+                        <button class="sd-btn-ghost" id="tsClearBtn" type="button">Clear</button>
+                    </div>
+                </div>
+                <div id="tsResults" class="sd-results"></div>
+            </section>
+
+            <!-- Booking History -->
+            <section class="sd-panel" id="bookingHistory" style="display:none;">
+                <div class="sd-panel-header">
+                    <h2><i class="fas fa-history"></i> Booking History</h2>
+                    <p class="sd-panel-subtitle">View complete booking history for any passenger.</p>
+                </div>
+                <div class="sd-form-card">
+                    <div class="sd-form-field">
+                        <label for="bhEmail">Passenger Email</label>
+                        <div class="sd-input-row">
+                            <input type="email" id="bhEmail" placeholder="passenger@example.com">
+                            <button class="sd-btn-primary" id="bhSearchBtn" type="button"><i class="fas fa-search"></i> Search</button>
+                        </div>
+                        <p id="bhError" class="sd-error"></p>
+                    </div>
+                </div>
+                <div id="bhResults" class="sd-results"></div>
+            </section>
+
+            <!-- Cancel Reservation -->
+            <section class="sd-panel" id="cancelReservation" style="display:none;">
+                <div class="sd-panel-header">
+                    <h2><i class="fas fa-times-circle"></i> Cancel Reservation</h2>
+                    <p class="sd-panel-subtitle">Cancel a passenger's booking upon their request.</p>
+                </div>
+                <div class="sd-form-card">
+                    <div class="sd-form-field">
+                        <label for="cancelEmail">Passenger Email</label>
+                        <div class="sd-input-row">
+                            <input type="email" id="cancelEmail" placeholder="passenger@example.com">
+                            <button class="sd-btn-primary" id="cancelSearchBtn" type="button"><i class="fas fa-search"></i> Find Bookings</button>
+                        </div>
+                        <p id="cancelError" class="sd-error"></p>
+                    </div>
+                </div>
+                <div id="cancelList" class="sd-results"></div>
+            </section>
+
+            <!-- Booking Confirmations -->
+            <section class="sd-panel" id="bookingConfirmations" style="display:none;">
+                <div class="sd-panel-header">
+                    <h2><i class="fas fa-check-circle"></i> Booking Confirmations</h2>
+                    <p class="sd-panel-subtitle">View and verify reservations across all passengers.</p>
+                    <input type="text" id="confSearch" class="sd-search-input" placeholder="Search by train, route, date, ref…">
+                </div>
+                <div id="confirmationsList" class="sd-results"><div class="sd-empty">Loading…</div></div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="firebase-config.js"></script>
+    <script src="role-routing.js"></script>
+    <script src="app-notifications.js"></script>
+    <script src="staff-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Diriyah Train</title>
+    <link rel="stylesheet" href="profile.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-logo">
+            <img src="logo.jpeg" alt="Diriyah Train Logo" class="nav-logo-image">
+            <span>Diriyah Train</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="booking.html" data-role-home="true">Home</a></li>
+            <li><a href="booking.html#searchCard">Schedules</a></li>
+            <li><a href="my-reservations.html">My Reservations</a></li>
+            <li><a href="profile.html">Profile</a></li>
+        </ul>
+        <div class="nav-actions">
+            <div class="profile-menu" id="profileMenu">
+                <button class="profile-circle" id="profileMenuButton" type="button" aria-label="Open profile menu" aria-expanded="false">
+                    <span id="profileMenuLabel"><i class="fas fa-user"></i></span>
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="profile.html">My Profile</a>
+                    <button id="profileLogoutBtn" type="button">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="profile-container" id="profilePage">
+        <section class="profile-hero">
+            <h1>My Profile</h1>
+            <p>Manage your account details and keep your booking information up to date.</p>
+        </section>
+
+        <section class="profile-layout">
+            <aside class="profile-summary">
+                <div class="profile-icon-wrap">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h2 id="summaryName">Loading...</h2>
+                <p id="summaryEmail">Loading...</p>
+            </aside>
+
+            <section class="profile-card" id="profileFields">
+                <div class="profile-field" data-field="fullName">
+                    <label>Full Name</label>
+                    <div class="field-view" id="fullNameView">
+                        <span id="fullNameText">Loading...</span>
+                        <button class="field-edit-btn" data-action="edit" data-field="fullName" type="button">Edit</button>
+                    </div>
+                    <div class="field-edit hidden" id="fullNameEditWrap">
+                        <input id="fullNameInput" type="text" placeholder="Enter full name">
+                        <button class="field-save-btn" data-action="save" data-field="fullName" type="button">Save</button>
+                        <button class="field-cancel-btn" data-action="cancel" data-field="fullName" type="button">Cancel</button>
+                    </div>
+                </div>
+
+                <div class="profile-field" data-field="email">
+                    <label>Email</label>
+                    <div class="field-view" id="emailView">
+                        <span id="emailText">Loading...</span>
+                        <button class="field-edit-btn" data-action="edit" data-field="email" type="button">Edit</button>
+                    </div>
+                    <div class="field-edit hidden" id="emailEditWrap">
+                        <input id="emailInput" type="email" placeholder="Enter email">
+                        <button class="field-save-btn" data-action="save" data-field="email" type="button">Save</button>
+                        <button class="field-cancel-btn" data-action="cancel" data-field="email" type="button">Cancel</button>
+                    </div>
+                </div>
+
+                <div class="profile-field" data-field="phoneNumber">
+                    <label>Phone Number</label>
+                    <div class="field-view" id="phoneNumberView">
+                        <span id="phoneNumberText">Loading...</span>
+                        <button class="field-edit-btn" data-action="edit" data-field="phoneNumber" type="button">Edit</button>
+                    </div>
+                    <div class="field-edit hidden" id="phoneNumberEditWrap">
+                        <input id="phoneNumberInput" type="text" placeholder="Enter phone number">
+                        <button class="field-save-btn" data-action="save" data-field="phoneNumber" type="button">Save</button>
+                        <button class="field-cancel-btn" data-action="cancel" data-field="phoneNumber" type="button">Cancel</button>
+                    </div>
+                </div>
+
+                <div class="profile-field" data-field="address">
+                    <label>Address</label>
+                    <div class="field-view" id="addressView">
+                        <span id="addressText">Loading...</span>
+                        <button class="field-edit-btn" data-action="edit" data-field="address" type="button">Edit</button>
+                    </div>
+                    <div class="field-edit hidden" id="addressEditWrap">
+                        <input id="addressInput" type="text" placeholder="Enter address">
+                        <button class="field-save-btn" data-action="save" data-field="address" type="button">Save</button>
+                        <button class="field-cancel-btn" data-action="cancel" data-field="address" type="button">Cancel</button>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div>
+                <h4>Company</h4>
+                <a href="about.html" class="footer-primary-link">About Us</a>
+                <a href="faq.html" class="footer-primary-link">FAQ</a>
+                <a href="#">Careers</a>
+                <a href="#">Newsroom</a>
+            </div>
+            <div>
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="#">Booking Guide</a>
+            </div>
+            <div>
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+            <div>
+                <h4>Travel</h4>
+                <a href="#">Stations</a>
+                <a href="#">Routes</a>
+                <a href="#">Travel Tips</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="firebase-config.js"></script>
+    <script src="role-routing.js"></script>
+    <script src="app-notifications.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>

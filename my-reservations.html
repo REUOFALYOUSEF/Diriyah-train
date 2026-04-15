@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reservations - Diriyah Train</title>
+    <link rel="stylesheet" href="my-reservations.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-logo">
+            <img src="logo.jpeg" alt="Diriyah Train Logo" class="nav-logo-image">
+            <span>Diriyah Train</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="booking.html" data-role-home="true">Home</a></li>
+            <li><a href="booking.html#searchCard">Search</a></li>
+            <li><a href="my-reservations.html" class="active">My Reservations</a></li>
+            <li><a href="profile.html">Profile</a></li>
+        </ul>
+        <div class="nav-actions">
+            <div class="profile-menu" id="profileMenu">
+                <button class="profile-circle" id="profileMenuButton" type="button" aria-label="Open profile menu" aria-expanded="false">
+                    <span id="profileMenuLabel"><i class="fas fa-user"></i></span>
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="profile.html">My Profile</a>
+                    <a href="my-reservations.html">My Reservations</a>
+                    <button id="profileLogoutBtn" type="button">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="reservations-page">
+        <section class="hero">
+            <h1>My Reservations</h1>
+            <p>Review your upcoming and past trips, edit contact details, or cancel if your plans change.</p>
+        </section>
+
+        <section class="summary-strip">
+            <article class="summary-card">
+                <h4>Upcoming Trips</h4>
+                <p id="upcomingCount">0</p>
+            </article>
+            <article class="summary-card">
+                <h4>Past Trips</h4>
+                <p id="pastCount">0</p>
+            </article>
+            <article class="summary-card">
+                <h4>Total Reservations</h4>
+                <p id="totalCount">0</p>
+            </article>
+        </section>
+
+        <section class="filters-bar" aria-label="Reservations filters">
+            <div class="filter-chips" id="reservationFilters">
+                <button class="chip-btn active" type="button" data-filter="all">All</button>
+                <button class="chip-btn" type="button" data-filter="upcoming">Upcoming</button>
+                <button class="chip-btn" type="button" data-filter="past">Past</button>
+                <button class="chip-btn" type="button" data-filter="cancelled">Cancelled</button>
+            </div>
+            <label class="search-wrap" for="trainSearchInput">
+                <i class="fas fa-search"></i>
+                <input id="trainSearchInput" type="search" placeholder="Search by Train ID">
+            </label>
+        </section>
+
+        <section class="list-section">
+            <div class="list-header">
+                <h2><i class="fas fa-calendar-check"></i> Upcoming Reservations</h2>
+            </div>
+            <div id="upcomingList" class="reservation-grid">
+                <div class="empty-state">No upcoming reservations.</div>
+            </div>
+        </section>
+
+        <section class="list-section">
+            <div class="list-header">
+                <h2><i class="fas fa-clock-rotate-left"></i> Past Reservations</h2>
+            </div>
+            <div id="pastList" class="reservation-grid">
+                <div class="empty-state">No past reservations yet.</div>
+            </div>
+        </section>
+
+        <section class="list-section" id="cancelledSection">
+            <div class="list-header">
+                <h2><i class="fas fa-ban"></i> Cancelled Reservations</h2>
+            </div>
+            <div id="cancelledList" class="reservation-grid">
+                <div class="empty-state">No cancelled reservations.</div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div>
+                <h4>Company</h4>
+                <a href="about.html" class="footer-primary-link">About Us</a>
+                <a href="faq.html" class="footer-primary-link">FAQ</a>
+                <a href="#">Careers</a>
+                <a href="#">Newsroom</a>
+            </div>
+            <div>
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="#">Booking Guide</a>
+            </div>
+            <div>
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+            <div>
+                <h4>Travel</h4>
+                <a href="#">Stations</a>
+                <a href="#">Routes</a>
+                <a href="#">Travel Tips</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="firebase-config.js"></script>
+    <script src="role-routing.js"></script>
+    <script src="app-notifications.js"></script>
+    <script src="my-reservations.js"></script>
+</body>
+</html>
